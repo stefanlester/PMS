@@ -1,0 +1,6 @@
+{
+    "env": {
+       "MONGO_ATLAS_PW": "sotwaresecurity101",
+       "JWT_KEY": "secret"
+    }
+}
