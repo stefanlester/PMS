@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require('multer');
-const checkAuth = require('../middleware/check-auth');
+//const checkAuth = require('../middleware/check-auth');
 const PasswordsController = require('../controllers/passwords');
 
 const storage = multer.diskStorage({
@@ -32,12 +32,12 @@ const upload = multer({
 
 router.get("/", PasswordsController.passwords_get_all);
 
-//router.post("/", checkAuth, upload.single('productImage'), ProductsController.products_create_product);
+router.post("/", PasswordsController.passwords_create_password);
 
 router.get("/:passwordId", PasswordsController.passwords_get_password);
 
-router.patch("/:passwordId", checkAuth, PasswordsController.passwords_update_password);
+router.patch("/:passwordId", PasswordsController.passwords_update_password);
 
-router.delete("/:passwordId", checkAuth, PasswordsController.passwords_delete);
+router.delete("/:passwordId", PasswordsController.passwords_delete);
 
 module.exports = router;

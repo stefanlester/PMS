@@ -8,7 +8,7 @@ const passwordRoutes = require('./api/routes/passwords')
 const legacyapplicationRoutes = require('./api/routes/legacyapplications')
 const userRoutes = require('./api/routes/user');
 
-mongoose.connect("mongodb://localhost/3000", {useMongoClient:true}); //hmm
+mongoose.connect("mongodb://localhost/4000", {useMongoClient:true}); //hmm
 
 mongoose.Promise = global.Promise;
 

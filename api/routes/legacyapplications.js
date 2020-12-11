@@ -4,14 +4,14 @@ const checkAuth = require('../middleware/check-auth');
 
 const LegacyApplicationsController = require('../controllers/legacyapplications');
 
-// Handle incoming GET requests to /orders
-router.get("/", checkAuth, LegacyApplicationsController.legacyapplications_get_all);
+// Handle incoming GET requests to /legacy apps
+router.get("/", LegacyApplicationsController.legacyapplications_get_all);
 
-router.post("/", checkAuth, LegacyApplicationsController.legacyapplications_create_legacyapplication);
+router.post("/", LegacyApplicationsController.legacyapplications_create_legacyapplication);
 
-router.get("/:legacyapplicationId", checkAuth, LegacyApplicationsController.legacyapplications_get_legacyapplication);
+router.get("/:legacyapplicationId", LegacyApplicationsController.legacyapplications_get_legacyapplication);
 
-router.delete("/:legacyapplicationId", checkAuth, LegacyApplicationsController.orders_delete_order);
+router.delete("/:legacyapplicationId", LegacyApplicationsController.legacyapplications_delete_legacyapplication);
 
 module.exports = router;
  
