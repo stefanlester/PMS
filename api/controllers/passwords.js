@@ -4,6 +4,7 @@ const Password = require("../models/password");
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
+//Changing so i can Comment
 function randPassword(letters, numbers, either) {
   var chars = [
    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", // letters
