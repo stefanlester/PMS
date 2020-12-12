@@ -69,7 +69,7 @@ exports.legacyapplications_create_legacyapplication = (req, res, next) => {
 };
 
 exports.legacyapplications_get_legacyapplication = (req, res, next) => {
-  LegacyApplication.findById(req.params.orderId)
+  LegacyApplication.findById(req.params.legacyapplicationId)
     .populate("password")
     .exec()
     .then(legacyapplication => {
@@ -94,7 +94,7 @@ exports.legacyapplications_get_legacyapplication = (req, res, next) => {
 };
 
 exports.legacyapplications_delete_legacyapplication = (req, res, next) => {
-  LegacyApplication.remove({ _id: req.params.orderId })
+  LegacyApplication.remove({ _id: req.params.legacyapplicationsId })
     .exec()
     .then(result => {
       res.status(200).json({

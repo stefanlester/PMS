@@ -1,5 +1,22 @@
 const mongoose = require("mongoose");
+const pwd = require("../models/password");
 const Password = require("../models/password");
+
+function randPassword(letters, numbers, either) {
+  var chars = [
+   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", // letters
+   "0123456789", // numbers
+   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" // either
+  ];
+
+  return [letters, numbers, either].map(function(len, i) {
+    return Array(len).fill(chars[i]).map(function(x) {
+      return x[Math.floor(Math.random() * x.length)];
+    }).join('');
+  }).concat().join('').split('').sort(function(){
+    return 0.5-Math.random();
+  }).join('')
+}
 
 exports.passwords_get_all = (req, res, next) => {
   Password.find()
@@ -13,6 +30,7 @@ exports.passwords_get_all = (req, res, next) => {
             email_username: doc.email_username,   // continue from here
             title: doc.title,
             password: doc.password,
+            generatedPw: randPassword(7,9,8),
             _id: doc._id,
             request: {
               type: "GET",
@@ -42,7 +60,8 @@ exports.passwords_create_password = (req, res, next) => {
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
     email_username: req.body.email_username,
-    password: req.body.password
+    password: req.body.password,
+    generatedPw: randPassword(7,9,8),
   });
   password
     .save()
@@ -53,6 +72,7 @@ exports.passwords_create_password = (req, res, next) => {
         createdPassword: {
           title: result.password,
           email_username: result.email_username,
+          generatedPw: result.generatedPw,
           _id: result._id,
           request: {
             type: "GET",
@@ -72,7 +92,7 @@ exports.passwords_create_password = (req, res, next) => {
 exports.passwords_get_password = (req, res, next) => {
   const id = req.params.passwordId;
   Password.findById(id)
-    .select("title email_username _id password")
+    .select("title email_username _id password generatedPw")
     .exec()
     .then(doc => {
       console.log("From database", doc);

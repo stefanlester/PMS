@@ -1,27 +1,22 @@
 const mongoose = require('mongoose');
 
-function generatePassword(pLength){
-
-    var keyListAlpha="abcdefghijklmnopqrstuvwxyz",
-        keyListInt="123456789",
-        keyListSpec="!@#_",
-        password='';
-    var len = Math.ceil(pLength/2);
-    len = len - 1;
-    var lenSpec = pLength-2*len;
-
-    for (i=0;i<len;i++) {
-        password+=keyListAlpha.charAt(Math.floor(Math.random()*keyListAlpha.length));
-        password+=keyListInt.charAt(Math.floor(Math.random()*keyListInt.length));
-    }
-
-    for (i=0;i<lenSpec;i++)
-        password+=keyListSpec.charAt(Math.floor(Math.random()*keyListSpec.length));
-
-    password=password.split('').sort(function(){return 0.5-Math.random()}).join('');
-
-    return password;
-}
+function randPassword(letters, numbers, either) {
+    var chars = [
+     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", // letters
+     "0123456789", // numbers
+     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" // either
+    ];
+  
+    return [letters, numbers, either].map(function(len, i) {
+      return Array(len).fill(chars[i]).map(function(x) {
+        return x[Math.floor(Math.random() * x.length)];
+      }).join('');
+    }).concat().join('').split('').sort(function(){
+      return 0.5-Math.random();
+    }).join('')
+  }
+  
+  // invoke like so: randPassword(5,3,2);
 
 const passwordSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -32,7 +27,8 @@ const passwordSchema = mongoose.Schema({
         unique: true, 
         match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
-    password: { type: String, required: true }
+    password: { type: String, required: false },
+    generatedPw: { type: String, required: false },
 });
 
 module.exports = mongoose.model('Password', passwordSchema);
