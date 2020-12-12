@@ -12,6 +12,8 @@ mongoose.connect("mongodb://localhost/4000", {useMongoClient:true}); //hmm
 
 mongoose.Promise = global.Promise;
 
+
+// FOR CORS. TO PREVENT CROSS SITE REQUEST FORGERY(CSRF)
 app.use(morgan("dev"));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
