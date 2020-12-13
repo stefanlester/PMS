@@ -4,6 +4,7 @@ const Password = require("../models/password");
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
+//REMEMBER TO WRITE THIS FUNCTION IN MIDDLEWARE AND EXPORT IT HERE
 function randPassword(letters, numbers, either) {
   var chars = [
    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", // letters
@@ -20,9 +21,11 @@ function randPassword(letters, numbers, either) {
   }).join('')
 }
 
+let randomPw = randPassword(10,10,10)
+
 exports.passwords_get_all = (req, res, next) => {
   Password.find()
-    .select("title email_username password")
+    .select("title email_username password generatedPw")  // added generatedPw to get generated password from function passwords_create_password
     .exec()
     .then(docs => {
       const response = {
@@ -32,7 +35,7 @@ exports.passwords_get_all = (req, res, next) => {
             email_username: doc.email_username,   // continue from here
             title: doc.title,
             password: doc.password,
-            generatedPw: randPassword(7,9,8),
+            generatedPw: doc.generatedPw, //get generated password
             _id: doc._id,
             request: {
               type: "GET",
@@ -63,7 +66,7 @@ exports.passwords_create_password = (req, res, next) => {
     title: req.body.title,
     email_username: req.body.email_username,
     password: req.body.password,
-    generatedPw: randPassword(7,9,8),
+    generatedPw: randomPw,
   });
   password
     .save()
