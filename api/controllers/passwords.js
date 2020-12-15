@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const pwd = require("../models/password"); // NOT IN USE NOW. WILL USE LATER
 const Password = require("../models/password");
 
+const hibp = require('hibp');
+
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
 //REMEMBER TO WRITE THIS FUNCTION IN MIDDLEWARE AND EXPORT IT HERE
