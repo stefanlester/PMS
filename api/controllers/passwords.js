@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const pwd = require("../models/password"); // NOT IN USE NOW. WILL USE LATER
 const Password = require("../models/password");
 
-const hibp = require('hibp');
+const hibp = require ('haveibeenpwned') ();
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
@@ -85,7 +85,7 @@ exports.passwords_create_password = (req, res, next) => {
             type: "GET",
             url: "http://localhost:4000/passwords/" + result._id
           }
-        }
+        } 
       });
     })
     .catch(err => {
@@ -169,3 +169,5 @@ exports.passwords_delete = (req, res, next) => {
       });
     });
 };
+
+
