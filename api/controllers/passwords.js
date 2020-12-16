@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const pwd = require("../models/password"); // NOT IN USE NOW. WILL USE LATER
 const Password = require("../models/password");
 
-const hibp = require ('haveibeenpwned') ();
+const hibp = require ('haveibeenpwned') (); // module for hibp
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
@@ -69,18 +69,30 @@ exports.passwords_create_password = (req, res, next) => {
     email_username: req.body.email_username,
     password: req.body.password,
     generatedPw: randomPw,
+    hibp_result: req.body.hibp_result
   });
   password
     .save()
     .then(result => {
       console.log(result);
+
+      //HIBP SERVICE
+      hibp.pwnedpasswords.byPassword ('generatedPw', (err, count) => {
+        if (!count) {
+          console.log ('Great! Password is not found.');
+        } else {
+          console.log ('Oops! Password was found ' + count + ' times!');
+        }
+      });
+       
       res.status(201).json({
         message: "Created password successfully",
         createdPassword: {
-          title: result.password,
+          title: result.title,
           email_username: result.email_username,
           generatedPw: result.generatedPw,
           _id: result._id,
+          hibp_result: result.hibp_result,
           request: {
             type: "GET",
             url: "http://localhost:4000/passwords/" + result._id

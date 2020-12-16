@@ -29,6 +29,7 @@ const passwordSchema = mongoose.Schema({
     },
     password: { type: String, required: false },
     generatedPw: { type: String, required: false },
+    hibp_result: { type: String, require: true}
 });
 
 module.exports = mongoose.model('Password', passwordSchema);
