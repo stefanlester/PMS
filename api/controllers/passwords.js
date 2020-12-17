@@ -162,7 +162,7 @@ exports.passwords_update_password = (req, res, next) => {
 
 exports.passwords_delete = (req, res, next) => {
   const id = req.params.productId;
-  Product.remove({ _id: id })
+  Password.remove({ _id: id })
     .exec()
     .then(result => {
       res.status(200).json({
@@ -182,4 +182,22 @@ exports.passwords_delete = (req, res, next) => {
     });
 };
 
+// @route POST api/auth/reset
+// @desc Reset Password - Validate password reset token and shows the password reset view
+// @access Public
+
+// gotten from password.js model(PMS\api\models\password.js Line 52)
+/* passwordSchema.methods.generatePasswordReset = function() {
+  this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+  this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
+}; */
+exports.passwords_reset = (req, res) => {
+  Password.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
+      .then((user) => {
+          if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
+
+          res.render('reset', {Password});
+      })
+      .catch(err => res.status(500).json({message: err.message}));
+};
 

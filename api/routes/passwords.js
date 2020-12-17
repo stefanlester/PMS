@@ -40,4 +40,6 @@ router.patch("/:passwordId", PasswordsController.passwords_update_password);
 
 router.delete("/:passwordId", PasswordsController.passwords_delete);
 
+router.patch("/:passwordId", PasswordsController.passwords_reset);
+
 module.exports = router;
