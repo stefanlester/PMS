@@ -1,9 +1,9 @@
+const encrypt = require('encryptor-node')
+const decrypt = require('encryptor-node')
 const mongoose = require("mongoose");
 const pwd = require("../models/password"); // NOT IN USE NOW. WILL USE LATER
 const Password = require("../models/password");
-const cypher = require('cypher-diu');
-
-
+const secret = 'secret'
 const hibp = require ('haveibeenpwned') (); // module for hibp
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
@@ -26,6 +26,7 @@ function randPassword(letters, numbers, either) {
 }
 
 let randomPw = randPassword(10,10,10)
+let payload = randomPw
 
 exports.passwords_get_all = (req, res, next) => {
   Password.find()
@@ -70,9 +71,10 @@ exports.passwords_create_password = (req, res, next) => {
     title: req.body.title,
     email_username: req.body.email_username,
     password: req.body.password,
-    generatedPw: randomPw,
+    generatedPw: payload,
     hibp_result: req.body.hibp_result
   });
+
   password
     .save()
     .then(result => {
@@ -86,7 +88,7 @@ exports.passwords_create_password = (req, res, next) => {
           console.log ('Oops! Password was found ' + count + ' times!');
         }
       });
-       
+
       res.status(201).json({
         message: "Created password successfully",
         createdPassword: {
@@ -111,6 +113,9 @@ exports.passwords_create_password = (req, res, next) => {
 };
 
 exports.passwords_get_password = (req, res, next) => {
+  // decrypting
+  //const decrypted = decrypt(secret, payload);
+  //console.log(decrypted); // { decrypted password }
   const id = req.params.passwordId;
   Password.findById(id)
     .select("title email_username _id password generatedPw")
