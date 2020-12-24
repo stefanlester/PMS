@@ -1,7 +1,7 @@
 {
-  "name": "rest-shop",
+  "name": "rest-pms",
   "version": "1.0.0",
-  "description": "A SHOP ordering system rest api",
+  "description": "A PMS rest api",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "mocha": "^8.2.1"
   }
 }
