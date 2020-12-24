@@ -143,7 +143,7 @@ exports.passwords_get_password = (req, res, next) => {
 };
 
 exports.passwords_update_password = (req, res, next) => {
-  const id = req.params.productId;
+  const id = req.params.passwordId;
   const updateOps = {};
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value;
@@ -168,7 +168,7 @@ exports.passwords_update_password = (req, res, next) => {
 };
 
 exports.passwords_delete = (req, res, next) => {
-  const id = req.params.productId;
+  const id = req.params.passwordId;
   Password.remove({ _id: id })
     .exec()
     .then(result => {
