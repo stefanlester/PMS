@@ -1,6 +1,6 @@
 let chai = require("chai")
 let chaiHttp = require("chai-http")
-const app = require("../app")
+const app = require("../app") 
 let server = require("../server")
 const pms = require("../api/controllers/passwords")
 
@@ -84,7 +84,7 @@ describe('Passwords API', () => {
         it("It should CREATE/POST a new password with its legacy app", (done) => {
             const password = {
                 title: "for testing",
-                email_username: "testing4@testing.com"
+                email_username: "testing5@testing.com"
                 //generatePassword is automated
             }
             chai.request(app)
@@ -170,6 +170,47 @@ describe('Passwords API', () => {
             })
 
 
+
+
+        })
+
+        // test case to delete a password
+        describe("http://localhost:4000/passwords/:id", () => {
+            it("It should DELETE a password by ID", (done) => {
+                // sample ID  const pwId = "5fe4ce926a14a008ece4697f"
+                //    const pmsID = _id
+                chai.request(app)
+
+                    .delete("/passwords/5fe4ce926a14a008ece4697f")
+                    .end((err, response) => {
+                        response.should.have.status(200)
+                        response.body.should.be.an('object')
+                        //response.body.should.have.property('_id:')
+                        // response.body.length.should.be.eq(5)
+                        done()
+
+                        console.log("Password deleted")
+
+                    })
+            })
+
+            //test case to make sure user can't delete password not in db
+            it("It should not DELETE a password by ID", (done) => {
+                // sample ID  const pwId = "5fd3725e192b7528e8e604f5"
+                //    const pmsID = _id
+                chai.request(app)
+
+                    // wrong password Id 123456789
+                    .get("/passwords/123456789")
+                    .end((err, response) => {
+                        response.should.have.status(500)
+                        response.body.should.be.an('object')
+                        //response.body.should.have.property('_id:')
+                        // response.body.length.should.be.eq(5)
+                        done()
+
+                    })
+            })
 
 
         })
