@@ -5,6 +5,8 @@ const pwd = require("../models/password"); // NOT IN USE NOW. WILL USE LATER
 const Password = require("../models/password");
 const secret = 'secret'
 const hibp = require ('haveibeenpwned') (); // module for hibp
+const encryptpwd = require('encrypt-with-password');
+const password = 'examplepassword';
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
@@ -26,7 +28,11 @@ function randPassword(letters, numbers, either) {
 }
 
 let randomPw = randPassword(10,10,10)
+
 let payload = randomPw
+const encrypted = encryptpwd.encrypt(payload, password);
+
+const newpayload = encrypted
 
 exports.passwords_get_all = (req, res, next) => {
   Password.find()
@@ -73,7 +79,7 @@ exports.passwords_create_password = (req, res, next) => {
     email_username: req.body.email_username,
     password: req.body.password,
     legacyApplicationUrl: req.body.legacyApplicationUrl,
-    generatedPw: payload,
+    generatedPw: newpayload,
     hibp_result: req.body.hibp_result
   });
 
