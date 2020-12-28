@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 function randPassword(letters, numbers, either) {
   var chars = [
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", // letters
-    "0123456789", // numbers
+    "0123456789~!@#$%^&*()_+", // numbers and characters
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" // either
   ];
 
@@ -33,6 +33,10 @@ const passwordSchema = mongoose.Schema({
   password: {
     type: String,
     required: false
+  },
+  legacyApplicationUrl: {
+    type: String,
+    required: true
   },
   generatedPw: {
     type: String,

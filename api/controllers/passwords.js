@@ -40,6 +40,7 @@ exports.passwords_get_all = (req, res, next) => {
             email_username: doc.email_username,   // continue from here
             title: doc.title,
             password: doc.password,
+            legacyApplicationUrl: doc.legacyApplicationUrl,
             generatedPw: doc.generatedPw, //get generated password
             _id: doc._id,
             request: {
@@ -71,6 +72,7 @@ exports.passwords_create_password = (req, res, next) => {
     title: req.body.title,
     email_username: req.body.email_username,
     password: req.body.password,
+    legacyApplicationUrl: req.body.legacyApplicationUrl,
     generatedPw: payload,
     hibp_result: req.body.hibp_result
   });
@@ -95,6 +97,8 @@ exports.passwords_create_password = (req, res, next) => {
           title: result.title,
           email_username: result.email_username,
           generatedPw: result.generatedPw,
+          password: result.password,
+          legacyApplicationUrl: result.legacyApplicationUrl,
           _id: result._id,
           hibp_result: result.hibp_result,
           request: {
@@ -118,7 +122,7 @@ exports.passwords_get_password = (req, res, next) => {
   //console.log(decrypted); // { decrypted password }
   const id = req.params.passwordId;
   Password.findById(id)
-    .select("title email_username _id password generatedPw")
+    .select("title email_username _id password generatedPw legacyApplicationUrl")
     .exec()
     .then(doc => {
       console.log("From database", doc);

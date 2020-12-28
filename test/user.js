@@ -16,7 +16,7 @@ describe('Users API', () => {
     describe("http://localhost:4000/users", () => {
         it("It should CREATE/POST a account with a username(email) and password", (done) => {
             const user = {
-                email: "stefanamoah1@test.com",
+                email: "stefanamoah2@test.com",
                 password: "sajdod'skdksda" // password is hashed with bycrypt
             }
             chai.request(app)
@@ -42,7 +42,7 @@ describe('Users API', () => {
             }
             chai.request(app)
 
-                .post("/user/signup") //hibp service runs from here
+                .post("/user/signup") 
                 .send(user)
                 .end((err, response) => {
                     response.should.have.status(500)
