@@ -32,7 +32,7 @@ let randomPw = randPassword(10,10,10)
 let payload = randomPw
 const encrypted = encryptpwd.encrypt(payload, password);
 
-const newpayload = encrypted
+let newpayload = encrypted
 
 exports.passwords_get_all = (req, res, next) => {
   Password.find()
