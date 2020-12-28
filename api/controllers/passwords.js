@@ -6,7 +6,7 @@ const Password = require("../models/password");
 const secret = 'secret'
 const hibp = require ('haveibeenpwned') (); // module for hibp
 const encryptpwd = require('encrypt-with-password');
-const password = 'examplepassword';
+const passwordforenc = 'examplepassword';
 
 // FUNCTION TO GENERATE RANDOM PASSWORD ACCORDING TO CONFIGURABLE LENGTH
 // FOR BOTWE: INITITALIZE FUNCTION LIKE THIS === randpassword(number of letters you want, number of numbers you want, mixed characters)
@@ -27,12 +27,12 @@ function randPassword(letters, numbers, either) {
   }).join('')
 }
 
-let randomPw = randPassword(10,10,10)
 
-let payload = randomPw
-const encrypted = encryptpwd.encrypt(payload, password);
 
-let newpayload = encrypted
+//let payload = randomPw
+// let encrypted = encryptpwd.encrypt(payload, password);
+
+// let newpayload = encrypted
 
 exports.passwords_get_all = (req, res, next) => {
   Password.find()
@@ -73,6 +73,12 @@ exports.passwords_get_all = (req, res, next) => {
 };
 
 exports.passwords_create_password = (req, res, next) => {
+  let randomPw = randPassword(10,10,10)
+  let payload = randomPw
+  let encrypted = encryptpwd.encrypt(payload, passwordforenc); 
+  let decrypted = encryptpwd.decrypt(encrypted, passwordforenc)
+
+  let newpayload = encrypted
   const password = new Password({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
@@ -83,6 +89,11 @@ exports.passwords_create_password = (req, res, next) => {
     hibp_result: req.body.hibp_result
   });
 
+  // let payload = req.body.generatedPw
+  // let encrypted = encryptpwd.encrypt(payload, passwordforenc);
+
+  // let newpayload = encrypted
+
   password
     .save()
     .then(result => {
@@ -91,14 +102,14 @@ exports.passwords_create_password = (req, res, next) => {
       //HIBP SERVICE
       hibp.pwnedpasswords.byPassword ('generatedPw', (err, count) => {
         if (!count) {
-          console.log ('Great! Password is not found.');
+          console.log ('Great! Password is not found. Password ' + decrypted);
         } else {
           console.log ('Oops! Password was found ' + count + ' times!');
         }
       });
 
       res.status(201).json({
-        message: "Created password successfully",
+        message: "Created password successfully. Generated Pw is encrypted. Here is the decrypted version " + decrypted,
         createdPassword: {
           title: result.title,
           email_username: result.email_username,
