@@ -84,7 +84,7 @@ describe('Passwords API', () => {
         it("It should CREATE/POST a new password with its legacy app", (done) => {
             const password = {
                 title: "for testing",
-                email_username: "testing14@testing.com",
+                email_username: "testing34@testing.com",
                 legacyApplicationUrl: "testing.com"
                 //generatePassword is automated
             }
