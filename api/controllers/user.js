@@ -45,7 +45,7 @@ exports.user_signup = (req, res, next) => {
 };
 
 exports.user_login = (req, res, next) => {
-  User.find({ email: req.body.email })
+  User.find({ email: req.body.email })  // Checks to see if email is in database
     .exec()
     .then(user => {
       if (user.length < 1) {
@@ -54,13 +54,13 @@ exports.user_login = (req, res, next) => {
         });
       }
       bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-        if (err) {
+        if (err) { // return Auth failed if password is wrong. Checks against hashed password
           return res.status(401).json({
             message: "Auth failed"
           });
         }
         if (result) {
-          const token = jwt.sign(
+          const token = jwt.sign( // gets token from server
             {
               email: user[0].email,
               userId: user[0]._id
@@ -70,7 +70,7 @@ exports.user_login = (req, res, next) => {
               expiresIn: "1h"
             }
           );
-          return res.status(200).json({
+          return res.status(200).json({ // if the token is correct login will be successful
             message: "Auth successful",
             token: token
           });

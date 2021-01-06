@@ -14,7 +14,7 @@ const passwordforenc = 'examplepassword';
 function randPassword(letters, numbers, either) {
   var chars = [
    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", // letters
-   "0123456789", // numbers
+   "0123456789!@#$%^&*()_+-=", // chars
    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" // either
   ];
 
@@ -75,7 +75,7 @@ exports.passwords_get_all = (req, res, next) => {
 exports.passwords_create_password = (req, res, next) => {
   let randomPw = randPassword(10,10,10)
   let payload = randomPw
-  let encrypted = encryptpwd.encrypt(payload, passwordforenc); 
+  let encrypted = encryptpwd.encrypt(payload, passwordforenc); //pw is encrypted here
   let decrypted = encryptpwd.decrypt(encrypted, passwordforenc)
 
   let newpayload = encrypted
